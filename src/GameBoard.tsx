@@ -18,10 +18,16 @@ export function GameBoard({ gameId }: { gameId: Id<"games"> }) {
   };
 
   const isValidMove = (boardIndex: number) => {
-    return (game.activeBoard ?? -1) === -1 || (game.activeBoard ?? -1) === boardIndex;
+    return (
+      (game.activeBoard ?? -1) === -1 || (game.activeBoard ?? -1) === boardIndex
+    );
   };
 
-  const boards = game.boards ?? Array(9).fill(null).map(() => Array(9).fill(""));
+  const boards =
+    game.boards ??
+    Array(9)
+      .fill(null)
+      .map(() => Array(9).fill(""));
   const innerWinners = game.innerWinners ?? Array(9).fill("");
 
   return (
@@ -52,8 +58,8 @@ export function GameBoard({ gameId }: { gameId: Id<"games"> }) {
                 <button
                   key={position}
                   className={`w-10 h-10 bg-white flex items-center justify-center text-lg font-bold hover:bg-gray-50
-                    ${position % 3 === 1 ? 'border-x-2' : 'border-x'} 
-                    ${Math.floor(position / 3) === 1 ? 'border-y-2' : 'border-y'}
+                    ${position % 3 === 1 ? "border-x-2" : "border-x"}
+                    ${Math.floor(position / 3) === 1 ? "border-y-2" : "border-y"}
                     border-gray-300`}
                   onClick={() => handleClick(boardIndex, position)}
                   disabled={
@@ -81,7 +87,9 @@ export function GameBoard({ gameId }: { gameId: Id<"games"> }) {
             </p>
           </>
         ) : game.status === "won" ? (
-          <p className="text-xl font-bold text-indigo-600">Winner: {game.winner}</p>
+          <p className="text-xl font-bold text-indigo-600">
+            Winner: {game.winner}
+          </p>
         ) : (
           <p className="text-xl font-bold text-gray-600">Draw!</p>
         )}
