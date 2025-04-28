@@ -1,4 +1,9 @@
-import { Authenticated, Unauthenticated, useQuery, useMutation } from "convex/react";
+import {
+  Authenticated,
+  Unauthenticated,
+  useQuery,
+  useMutation,
+} from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
@@ -24,7 +29,10 @@ export default function App() {
 }
 
 function Content() {
-  const loggedInUser = useQuery(api.auth.loggedInUser) as Doc<"users"> | null | undefined;
+  const loggedInUser = useQuery(api.auth.loggedInUser) as
+    | Doc<"users">
+    | null
+    | undefined;
   const games = useQuery(api.games.listGames);
   const createGame = useMutation(api.games.createGame);
   const otherUsers = useQuery(api.users.list) as Doc<"users">[] | undefined;
@@ -45,6 +53,21 @@ function Content() {
           <p className="text-xl text-slate-600">
             Welcome back, {loggedInUser?.email ?? "friend"}!
           </p>
+          <div className=" bg-white p-4 rounded-lg shadow-sm border">
+            <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
+              {" "}
+              {/* Updated to use flex */}
+              <h3 className="font-semibold text-base text-black">
+                How to Play Ultimate Tic Tac Toe:
+              </h3>
+              <p>1. Win small boards to claim them in the big game</p>
+              <p>
+                2. Your move determines which board your opponent must play in
+                next
+              </p>
+              <p>3. Win three small boards in a row to win the game!</p>
+            </div>
+          </div>
         </Authenticated>
         <Unauthenticated>
           <p className="text-xl text-slate-600">Sign in to play</p>
