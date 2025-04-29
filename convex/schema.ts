@@ -17,6 +17,15 @@ const applicationTables = {
     winner: v.optional(v.string()),
     status: v.string(),
   }),
+  users: defineTable({
+    name: v.optional(v.string()), // Adding name field to the users schema
+    // Adding isAnonymous field to the users schema
+    isAnonymous: v.optional(v.boolean()),
+    // Adding removedUsers property to the users schema
+    removedUsers: v.optional(v.array(v.id("users"))),
+    email: v.optional(v.string()), // Adding email property to the users schema
+    // ...existing user properties...
+  }),
 };
 
 export default defineSchema({

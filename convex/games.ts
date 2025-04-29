@@ -12,7 +12,9 @@ export const createGame = mutation({
 
     // Create 9 empty boards
     const emptyBoard = Array(9).fill("");
-    const boards = Array(9).fill(null).map(() => [...emptyBoard]);
+    const boards = Array(9)
+      .fill(null)
+      .map(() => [...emptyBoard]);
 
     return await ctx.db.insert("games", {
       boards,
@@ -45,12 +47,19 @@ export const makeMove = mutation({
     if (!isPlayerX && !isPlayerO) throw new Error("Not a player in this game");
 
     const currentPlayer = game.currentTurn;
-    if ((currentPlayer === "X" && !isPlayerX) || (currentPlayer === "O" && !isPlayerO)) {
+    if (
+      (currentPlayer === "X" && !isPlayerX) ||
+      (currentPlayer === "O" && !isPlayerO)
+    ) {
       throw new Error("Not your turn");
     }
 
     // Initialize boards and innerWinners if they don't exist
-    const boards = game.boards ?? Array(9).fill(null).map(() => Array(9).fill(""));
+    const boards =
+      game.boards ??
+      Array(9)
+        .fill(null)
+        .map(() => Array(9).fill(""));
     const innerWinners = game.innerWinners ?? Array(9).fill("");
     const activeBoard = game.activeBoard ?? -1;
 
@@ -70,9 +79,11 @@ export const makeMove = mutation({
     }
 
     // Make the move
-    const newBoards = boards.map((board, index) => 
-      index === args.boardIndex 
-        ? board.map((cell, pos) => pos === args.position ? currentPlayer : cell)
+    const newBoards = boards.map((board, index) =>
+      index === args.boardIndex
+        ? board.map((cell, pos) =>
+            pos === args.position ? currentPlayer : cell
+          )
         : board
     );
 
@@ -105,6 +116,25 @@ export const makeMove = mutation({
   },
 });
 
+export const deleteGame = mutation({
+  args: {
+    gameId: v.id("games"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const game = await ctx.db.get(args.gameId);
+    if (!game) throw new Error("Game not found");
+
+    const isPlayerX = game.playerX === userId;
+    const isPlayerO = game.playerO === userId;
+    if (!isPlayerX && !isPlayerO) throw new Error("Not a player in this game");
+
+    await ctx.db.delete(args.gameId);
+  },
+});
+
 export const getGame = query({
   args: {
     gameId: v.id("games"),
@@ -122,7 +152,9 @@ export const listGames = query({
 
     return await ctx.db
       .query("games")
-      .filter((q) => q.or(q.eq(q.field("playerX"), userId), q.eq(q.field("playerO"), userId)))
+      .filter((q) =>
+        q.or(q.eq(q.field("playerX"), userId), q.eq(q.field("playerO"), userId))
+      )
       .collect();
   },
 });
