@@ -47,9 +47,7 @@ function LocalPlay() {
           Ultimate Tic Tac Toe
         </h1>
         <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <h3 className="font-semibold text-base text-black">
-            How to Play Ultimate Tic Tac Toe:
-          </h3>
+          <h3 className="font-semibold text-base text-black">How to Play:</h3>
           <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
             <p>1. Win small boards to claim them in the big game</p>
             <p>
@@ -96,9 +94,7 @@ function Content() {
           <div className=" bg-white p-4 rounded-lg shadow-sm border">
             {" "}
             {/* Updated to use flex */}
-            <h3 className="font-semibold text-base text-black">
-              How to Play Ultimate Tic Tac Toe:
-            </h3>
+            <h3 className="font-semibold text-base text-black">How to Play:</h3>
             <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
               <p>1. Win small boards to claim them in the big game</p>
               <p>

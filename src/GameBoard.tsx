@@ -78,9 +78,7 @@ export function GameBoard({
   if (isLocalPlay) {
     return (
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-bold accent-text mb-4">
-          Ultimate Tic Tac Toe
-        </h1>
+        <h1 className="text-3xl  accent-text mt-4">Current Game: </h1>
         <div className="grid grid-cols-3 gap-2 p-4 bg-gray-100 rounded-xl">
           {localGame.boards.map((board, boardIndex) => (
             <div
