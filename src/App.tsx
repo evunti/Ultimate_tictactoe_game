@@ -18,7 +18,9 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center border-b">
-        <h2 className="text-xl font-semibold accent-text">Tic Tac Toe</h2>
+        <h2 className="text-xl font-semibold accent-text">
+          Ultimate Tic Tac Toe
+        </h2>
         <button
           className="px-4 py-2 rounded-lg bg-indigo-500 text-white"
           onClick={() => setIsLocalPlay(!isLocalPlay)}
@@ -40,7 +42,24 @@ export default function App() {
 function LocalPlay() {
   return (
     <div className="flex flex-col items-center gap-4">
-      <h3 className="text-2xl font-bold">Local Play</h3>
+      <div className="text-center">
+        <h1 className="text-5xl font-bold accent-text mb-4">
+          Ultimate Tic Tac Toe
+        </h1>
+        <div className="bg-white p-4 rounded-lg shadow-sm border">
+          <h3 className="font-semibold text-base text-black">
+            How to Play Ultimate Tic Tac Toe:
+          </h3>
+          <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
+            <p>1. Win small boards to claim them in the big game</p>
+            <p>
+              2. Your move determines which board your opponent must play in
+              next
+            </p>
+            <p>3. Win three small boards in a row to win the game!</p>
+          </div>
+        </div>
+      </div>
       <GameBoard isLocalPlay={true} />
     </div>
   );
@@ -67,7 +86,9 @@ function Content() {
   return (
     <div className="flex flex-col gap-8">
       <div className="text-center">
-        <h1 className="text-5xl font-bold accent-text mb-4">Tic Tac Toe</h1>
+        <h1 className="text-5xl font-bold accent-text mb-4">
+          Ultimate Tic Tac Toe
+        </h1>
         <Authenticated>
           <p className="text-xl text-slate-600">
             Welcome back, {loggedInUser?.email ?? "friend"}!
@@ -102,7 +123,9 @@ function Content() {
           <div className="bg-white p-4 rounded-lg shadow-sm border">
             <h3 className="font-semibold mb-4">Start a New Game</h3>
             {otherUsers.length === 0 ? (
-              <p className="text-center text-slate-600">No players available to start a game.</p>
+              <p className="text-center text-slate-600">
+                No players available to start a game.
+              </p>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {otherUsers

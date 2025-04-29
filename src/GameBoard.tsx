@@ -78,6 +78,9 @@ export function GameBoard({
   if (isLocalPlay) {
     return (
       <div className="flex flex-col items-center gap-4">
+        <h1 className="text-5xl font-bold accent-text mb-4">
+          Ultimate Tic Tac Toe
+        </h1>
         <div className="grid grid-cols-3 gap-2 p-4 bg-gray-100 rounded-xl">
           {localGame.boards.map((board, boardIndex) => (
             <div
@@ -89,6 +92,17 @@ export function GameBoard({
                   : "bg-gray-50"
               } p-2 rounded-lg border-2 border-gray-300`}
             >
+              {/* Add board label and winner */}
+              <div className="absolute top-0 left-0 p-1 text-xs text-gray-500">
+                Board {boardIndex + 1}
+              </div>
+              {localGame.innerWinners[boardIndex] && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
+                  <span className="text-6xl font-bold text-indigo-600">
+                    {localGame.innerWinners[boardIndex]}
+                  </span>
+                </div>
+              )}
               <div className="grid grid-cols-3 mt-4">
                 {board.map((cell, position) => (
                   <button
@@ -110,7 +124,12 @@ export function GameBoard({
         </div>
         <div className="text-center space-y-2">
           {localGame.status === "playing" ? (
-            <p>Current turn: {localGame.currentTurn}</p>
+            <p>
+              Current turn: {localGame.currentTurn}.{" "}
+              {localGame.activeBoard === -1
+                ? "You can play in any board."
+                : `Play in board ${localGame.activeBoard + 1}.`}
+            </p>
           ) : localGame.status === "won" ? (
             <p className="text-xl font-bold text-indigo-600">
               Winner: {localGame.currentTurn === "X" ? "O" : "X"}
@@ -162,6 +181,9 @@ export function GameBoard({
 
   return (
     <div className="flex flex-col items-center gap-4">
+      <h1 className="text-5xl font-bold accent-text mb-4">
+        Ultimate Tic Tac Toe
+      </h1>
       {/* Main game board with distinct borders */}
       <div className="grid grid-cols-3 gap-2 p-4 bg-gray-100 rounded-xl">
         {boards.map((board, boardIndex) => (
