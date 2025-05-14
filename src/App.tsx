@@ -4,7 +4,8 @@ import { Toaster } from "sonner";
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm p-4 flex justify-between items-center border-b">
+      {/* Hide header on mobile (smaller than sm) */}
+      <header className="hidden sm:flex sticky top-0 z-10 bg-white/80 backdrop-blur-sm p-4 justify-between items-center border-b">
         <h2 className="text-xl md:text-2xl font-semibold accent-text">
           Ultimate Tic Tac Toe
         </h2>
