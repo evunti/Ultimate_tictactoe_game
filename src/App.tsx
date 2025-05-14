@@ -27,9 +27,7 @@ function LocalPlay() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold accent-text mb-4">
           Ultimate Tic Tac Toe
         </h1>
-        <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">
-          Play Ultimate Tic Tac Toe Online – Free Multiplayer Strategy Game
-        </h2>
+
         <p className="text-sm sm:text-base text-gray-700 mb-4 max-w-xl mx-auto"></p>
         <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border w-full max-w-sm mx-auto">
           <h3 className="font-semibold text-base text-black">How to Play:</h3>
