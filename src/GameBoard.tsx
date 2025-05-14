@@ -46,9 +46,8 @@ export function GameBoard() {
                       {/* Winner mark overlay */}
                       <div className="absolute inset-0 flex items-center justify-center z-20">
                         <span
-                          className={`font-bold ${game.innerWinners[boardIndex] === "X" ? "text-blue-600" : "text-red-500"} select-none`}
+                          className={`font-bold ${game.innerWinners[boardIndex] === "X" ? "text-blue-600" : "text-red-500"} select-none text-[22vw] sm:text-[12vw] md:text-[8vw] lg:text-[6vw] xl:text-[10vw] 2xl:text-[4vw]`}
                           style={{
-                            fontSize: "8vw", // Slightly less than before
                             width: "100%",
                             height: "100%",
                             display: "flex",
@@ -105,7 +104,17 @@ export function GameBoard() {
       <div className="text-center space-y-2">
         {game.status === "playing" ? (
           <p>
-            Current turn: <span className={game.currentTurn === "X" ? "text-blue-600 font-bold" : "text-red-500 font-bold"}>{game.currentTurn}</span>.{" "}
+            Current turn:{" "}
+            <span
+              className={
+                game.currentTurn === "X"
+                  ? "text-blue-600 font-bold"
+                  : "text-red-500 font-bold"
+              }
+            >
+              {game.currentTurn}
+            </span>
+            .{" "}
             {game.activeBoard === -1
               ? "You can play in any board."
               : `Play in board ${game.activeBoard + 1}.`}
