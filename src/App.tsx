@@ -26,15 +26,13 @@ function LocalPlay() {
         <h1 className="text-5xl font-bold accent-text mb-4">
           Ultimate Tic Tac Toe
         </h1>
+
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <h3 className="font-semibold text-base text-black">How to Play:</h3>
           <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
-            <p>1. Win small boards to claim them in the big game</p>
-            <p>
-              2. Your move determines which board your opponent must play in
-              next
-            </p>
-            <p>3. Win three small boards in a row to win the game!</p>
+            <p>1. Win a small board to claim it.</p>
+            <p>2. Your move tells your opponent where to play next.</p>
+            <p> 3. Win 3 small boards in a row to win the game!</p>
           </div>
         </div>
       </div>
