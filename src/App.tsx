@@ -1,5 +1,4 @@
 import { GameBoard } from "./GameBoard";
-import { Toaster } from "sonner";
 
 export default function App() {
   return (
@@ -15,7 +14,6 @@ export default function App() {
           <LocalPlay />
         </div>
       </main>
-      <Toaster />
     </div>
   );
 }
@@ -27,72 +25,19 @@ function LocalPlay() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold accent-text mb-4">
           Ultimate Tic Tac Toe
         </h1>
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
-          <h3 className="font-semibold text-base text-black">
-            How to Play Ultimate Tic Tac Toe:
-          </h3>
-          <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
-            <p>1. Win small boards to claim them in the big game</p>
-            <p>
-              2. Your move determines which board your opponent must play in
-              next
-            </p>
-            <p>3. Win three small boards in a row to win the game!</p>
+
+        <p className="text-sm sm:text-base text-gray-700 mb-4 max-w-xl mx-auto"></p>
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border w-full max-w-sm mx-auto">
+          <h3 className="font-semibold text-base text-black">How to Play:</h3>
+          <div className="text-xs sm:text-sm text-gray-600 space-y-2 flex flex-col items-start">
+            <p>1. Win a small board to claim it.</p>
+            <p>2. Your move tells your opponent where to play next.</p>
+            <p>3. Win 3 small boards in a row to win the game!</p>
           </div>
         </div>
       </div>
-      <GameBoard isLocalPlay={true} />
-    </div>
-  );
-}
-
-function Content() {
-  const loggedInUser = useQuery(api.auth.loggedInUser) as
-    | Doc<"users">
-    | null
-    | undefined;
-  const games = useQuery(api.games.listGames);
-  const createGame = useMutation(api.games.createGame);
-  const otherUsers = useQuery(api.users.list) as Doc<"users">[] | undefined;
-  const removeUser = useMutation(api.users.removeUser);
-
-  if (loggedInUser === undefined || otherUsers === undefined) {
-    return (
-      <div className="flex justify-center items-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-8">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold accent-text mb-4">
-          Ultimate Tic Tac Toe
-        </h1>
-        <Authenticated>
-          <p className="text-xl text-slate-600">
-            Welcome back, {loggedInUser?.email ?? "friend"}!
-          </p>
-          <div className=" bg-white p-4 rounded-lg shadow-sm border">
-            {" "}
-            {/* Updated to use flex */}
-            <h3 className="font-semibold text-base text-black">
-              How to Play Ultimate Tic Tac Toe:
-            </h3>
-            <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
-              <p>1. Win small boards to claim them in the big game</p>
-              <p>
-                2. Your move determines which board your opponent must play in
-                next
-              </p>
-              <p>3. Win three small boards in a row to win the game!</p>
-            </div>
-          </div>
-        </Authenticated>
-        <Unauthenticated>
-          <p className="text-xl text-slate-600">Sign in to play</p>
-        </Unauthenticated>
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
+        <GameBoard />
       </div>
     </div>
   );

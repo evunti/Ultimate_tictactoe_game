@@ -2,184 +2,100 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
 import { makeMove, resetGame } from "./gameSlice";
 
-export function GameBoard({
-  gameId,
-  isLocalPlay,
-}: {
-  gameId?: Id<"games">;
-  isLocalPlay?: boolean;
-}) {
-  const [localGame, setLocalGame] = useState({
-    boards: Array(9)
-      .fill(null)
-      .map(() => Array(9).fill("")),
-    currentTurn: "X",
-    activeBoard: -1,
-    innerWinners: Array(9).fill(""),
-    status: "playing",
-  });
-
-  const handleLocalMove = (boardIndex: number, position: number) => {
-    if (localGame.status !== "playing") return;
-
-    const boards = localGame.boards.map((board, index) =>
-      index === boardIndex
-        ? board.map((cell, pos) =>
-            pos === position ? localGame.currentTurn : cell
-          )
-        : board
-    );
-
-    const innerWinner = checkWinner(boards[boardIndex]);
-    const innerWinners = [...localGame.innerWinners];
-    if (innerWinner) {
-      innerWinners[boardIndex] = innerWinner;
-    }
-
-    const winner = checkWinner(innerWinners);
-    const isDraw = !winner && innerWinners.every((w) => w !== "");
-
-    let nextActiveBoard = position;
-    if (innerWinners[nextActiveBoard] !== "") {
-      nextActiveBoard = -1;
-    }
-
-    setLocalGame({
-      boards,
-      currentTurn: localGame.currentTurn === "X" ? "O" : "X",
-      activeBoard: nextActiveBoard,
-      innerWinners,
-      status: winner ? "won" : isDraw ? "draw" : "playing",
-    });
-  };
-
-  if (isLocalPlay) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-bold accent-text mb-4">
-          Ultimate Tic Tac Toe
-        </h1>
-        <div className="grid grid-cols-3 gap-2 p-4 bg-gray-100 rounded-xl">
-          {localGame.boards.map((board, boardIndex) => (
-            <div
-              key={boardIndex}
-              className={`relative ${
-                localGame.activeBoard === -1 ||
-                localGame.activeBoard === boardIndex
-                  ? "bg-white"
-                  : "bg-gray-50"
-              } p-2 rounded-lg border-2 border-gray-300`}
-            >
-              {/* Add board label and winner */}
-              <div className="absolute top-0 left-0 p-1 text-xs text-gray-500">
-                Board {boardIndex + 1}
-              </div>
-              {localGame.innerWinners[boardIndex] && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
-                  <span className="text-6xl font-bold text-indigo-600">
-                    {localGame.innerWinners[boardIndex]}
-                  </span>
-                </div>
-              )}
-              <div className="grid grid-cols-3 mt-4">
-                {board.map((cell, position) => (
-                  <button
-                    key={position}
-                    className="w-10 h-10 bg-white flex items-center justify-center text-lg font-bold hover:bg-gray-50 border border-gray-300"
-                    onClick={() => handleLocalMove(boardIndex, position)}
-                    disabled={
-                      cell !== "" ||
-                      (localGame.activeBoard !== -1 &&
-                        localGame.activeBoard !== boardIndex)
-                    }
-                  >
-                    {cell}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="text-center space-y-2">
-          {localGame.status === "playing" ? (
-            <p>
-              Current turn: {localGame.currentTurn}.{" "}
-              {localGame.activeBoard === -1
-                ? "You can play in any board."
-                : `Play in board ${localGame.activeBoard + 1}.`}
-            </p>
-          ) : localGame.status === "won" ? (
-            <p className="text-xl font-bold text-indigo-600">
-              Winner: {localGame.currentTurn === "X" ? "O" : "X"}
-            </p>
-          ) : (
-            <p className="text-xl font-bold text-gray-600">Draw!</p>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  const game = useQuery(api.games.getGame, { gameId: gameId! });
-  const makeMove = useMutation(api.games.makeMove);
-  const deleteGame = useMutation(api.games.deleteGame);
-
-  if (!game) return null;
-
-  const handleClick = async (boardIndex: number, position: number) => {
-    try {
-      await makeMove({ gameId: gameId!, boardIndex, position });
-    } catch (error: any) {
-      console.error(error);
-      alert(error.message);
-    }
-  };
-
-  const handleDeleteGame = async () => {
-    try {
-      await deleteGame({ gameId: gameId! });
-    } catch (error: any) {
-      console.error(error);
-      alert(error.message);
-    }
-  };
-
-  const isValidMove = (boardIndex: number) => {
-    return (
-      (game.activeBoard ?? -1) === -1 || (game.activeBoard ?? -1) === boardIndex
-    );
-  };
-
-  const boards =
-    game.boards ??
-    Array(9)
-      .fill(null)
-      .map(() => Array(9).fill(""));
-  const innerWinners = game.innerWinners ?? Array(9).fill("");
+export function GameBoard() {
+  const game = useSelector((state: RootState) => state.game);
+  const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <h1 className="text-5xl font-bold accent-text mb-4">
-        Ultimate Tic Tac Toe
-      </h1>
-      {/* Main game board with distinct borders */}
-      <div className="grid grid-cols-3 gap-2 p-4 bg-gray-100 rounded-xl">
-        {boards.map((board, boardIndex) => (
-          <div
-            key={boardIndex}
-            className={`relative ${
-              isValidMove(boardIndex) ? "bg-white" : "bg-gray-50"
-            } p-2 rounded-lg border-2 border-gray-300`}
-          >
-            {/* Board number */}
-            <div className="absolute top-0 left-0 p-1 text-xs text-gray-500">
-              Board {boardIndex + 1}
+    <div className="flex flex-col items-center gap-4 w-full">
+      <h1 className="text-3xl accent-text mt-4">Current Game: </h1>
+      <div className="relative">
+        {/* Board area with overlay wrapper */}
+        <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md">
+          {/* Overlay for whole board when game is won */}
+          {game.status === "won" && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl z-30 pointer-events-none">
+              <span
+                className={`font-bold ${game.currentTurn === "X" ? "text-red-500" : "text-blue-600"} w-full h-full flex items-center justify-center text-[40vw] sm:text-[22vw] md:text-[16vw] lg:text-[13vw] xl:text-[11vw] 2xl:text-[9vw] leading-none select-none`}
+              >
+                {game.currentTurn === "X" ? "O" : "X"}
+              </span>
             </div>
-            {innerWinners[boardIndex] && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
-                <span className="text-6xl font-bold text-indigo-600">
-                  {innerWinners[boardIndex]}
-                </span>
+          )}
+          {/* Main board grid */}
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 sm:p-4 bg-gray-100 rounded-xl w-full">
+            {game.boards.map((board, boardIndex) => (
+              <div key={boardIndex} className="flex flex-col items-center">
+                {/* Board label, now outside the mini board box */}
+                <div className="mb-1 text-xs sm:text-sm text-gray-500 font-medium">
+                  Board {boardIndex + 1}
+                </div>
+                <div
+                  className={`relative aspect-square flex flex-col ${
+                    game.activeBoard === -1 || game.activeBoard === boardIndex
+                      ? "bg-white"
+                      : "bg-gray-50"
+                  } p-1 sm:p-2 rounded-lg border-2 border-gray-300 w-full`}
+                  style={{ minWidth: 0 }}
+                >
+                  {/* Winner overlay, covers the mini board */}
+                  {game.innerWinners[boardIndex] && (
+                    <>
+                      {/* Gray out the mini board background */}
+                      <div className="absolute inset-0 bg-gray-200 opacity-50 rounded-lg z-10" />
+                      {/* Winner mark overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center z-20">
+                        <span
+                          className={`font-bold ${game.innerWinners[boardIndex] === "X" ? "text-blue-600" : "text-red-500"} select-none text-[22vw] sm:text-[12vw] md:text-[8vw] lg:text-[6vw] xl:text-[10vw] 2xl:text-[4vw]`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            lineHeight: 1,
+                            textAlign: "center",
+                            overflow: "hidden",
+                          }}
+                        >
+                          {game.innerWinners[boardIndex]}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  {/* Mini board grid with visible lines using gap and background */}
+                  <div className="relative flex-1 z-0">
+                    {/* Sharper hashtag grid overlay */}
+                    <div className="pointer-events-none absolute inset-0 z-10">
+                      {/* Vertical lines */}
+                      <div className="absolute top-0 bottom-0 left-1/3 w-px bg-gray-500 opacity-100" />
+                      <div className="absolute top-0 bottom-0 left-2/3 w-px bg-gray-500 opacity-100" />
+                      {/* Horizontal lines */}
+                      <div className="absolute left-0 right-0 top-1/3 h-px bg-gray-500 opacity-100" />
+                      <div className="absolute left-0 right-0 top-2/3 h-px bg-gray-500 opacity-100" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-0 w-full h-full">
+                      {board.map((cell, position) => (
+                        <button
+                          key={position}
+                          className={`w-7 h-7 sm:w-10 sm:h-10 bg-white flex items-center justify-center text-base sm:text-lg font-bold hover:bg-indigo-50 transition-colors duration-150
+                            ${cell === "X" ? "text-blue-600" : cell === "O" ? "text-red-500" : ""}`}
+                          style={{ boxSizing: "border-box" }}
+                          onClick={() =>
+                            dispatch(makeMove({ boardIndex, position }))
+                          }
+                          disabled={
+                            cell !== "" ||
+                            (game.activeBoard !== -1 &&
+                              game.activeBoard !== boardIndex)
+                          }
+                        >
+                          {cell}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
