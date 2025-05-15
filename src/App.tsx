@@ -1,5 +1,4 @@
 import { GameBoard } from "./GameBoard";
-import { Toaster } from "sonner";
 
 export default function App() {
   return (
@@ -15,7 +14,6 @@ export default function App() {
           <LocalPlay />
         </div>
       </main>
-      <Toaster />
     </div>
   );
 }
