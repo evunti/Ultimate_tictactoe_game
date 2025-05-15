@@ -2,93 +2,36 @@ import { GameBoard } from "./GameBoard";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hide header on mobile (smaller than sm) */}
-      <header className="hidden sm:flex sticky top-0 z-10 bg-white/80 backdrop-blur-sm p-4 justify-between items-center border-b">
-        <h2 className="text-xl md:text-2xl font-semibold accent-text">
-          Ultimate Tic Tac Toe
-        </h2>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 to-slate-200">
+      <header className="py-8 text-center">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-800 tracking-tight mb-2 drop-shadow-md">
+          UltimateTTT
+        </h1>
+        <div className="text-lg sm:text-xl text-slate-600 font-medium mb-4">
+          Ultimate Tic Tac Toe – Play Online
+        </div>
       </header>
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div className="w-full max-w-md mx-auto px-2 sm:px-0">
-          <LocalPlay />
+      <main className="flex-1 flex flex-col items-center justify-start px-2 pb-8">
+        <div className="w-full max-w-md">
+          <HowToPlayCard />
+        </div>
+        <div className="w-full max-w-2xl mt-8 flex justify-center">
+          <GameBoard />
         </div>
       </main>
     </div>
   );
 }
 
-function LocalPlay() {
+function HowToPlayCard() {
   return (
-    <div className="flex flex-col items-center gap-4 w-full">
-      <div className="text-center w-full">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold accent-text mb-4">
-          Ultimate Tic Tac Toe
-        </h1>
-
-        <p className="text-sm sm:text-base text-gray-700 mb-4 max-w-xl mx-auto"></p>
-        <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border w-full max-w-sm mx-auto">
-          <h3 className="font-semibold text-base text-black">How to Play:</h3>
-          <div className="text-xs sm:text-sm text-gray-600 space-y-2 flex flex-col items-start">
-            <p>1. Win a small board to claim it.</p>
-            <p>2. Your move tells your opponent where to play next.</p>
-            <p>3. Win 3 small boards in a row to win the game!</p>
-          </div>
-        </div>
-      </div>
-      <GameBoard isLocalPlay={true} />
-    </div>
-  );
-}
-
-function Content() {
-  const loggedInUser = useQuery(api.auth.loggedInUser) as
-    | Doc<"users">
-    | null
-    | undefined;
-  const games = useQuery(api.games.listGames);
-  const createGame = useMutation(api.games.createGame);
-  const otherUsers = useQuery(api.users.list) as Doc<"users">[] | undefined;
-  const removeUser = useMutation(api.users.removeUser);
-
-  if (loggedInUser === undefined || otherUsers === undefined) {
-    return (
-      <div className="flex justify-center items-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-8">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold accent-text mb-4">
-          Ultimate Tic Tac Toe
-        </h1>
-        <Authenticated>
-          <p className="text-xl text-slate-600">
-            Welcome back, {loggedInUser?.email ?? "friend"}!
-          </p>
-          <div className=" bg-white p-4 rounded-lg shadow-sm border">
-            {" "}
-            {/* Updated to use flex */}
-            <h3 className="font-semibold text-base text-black">
-              How to Play Ultimate Tic Tac Toe:
-            </h3>
-            <div className="text-sm text-gray-600 space-y-2 flex flex-col items-start">
-              <p>1. Win small boards to claim them in the big game</p>
-              <p>
-                2. Your move determines which board your opponent must play in
-                next
-              </p>
-              <p>3. Win three small boards in a row to win the game!</p>
-            </div>
-          </div>
-        </Authenticated>
-        <Unauthenticated>
-          <p className="text-xl text-slate-600">Sign in to play</p>
-        </Unauthenticated>
-      </div>
+    <div className="bg-white/90 p-4 sm:p-6 rounded-xl shadow-md border border-slate-200 mb-4">
+      <h2 className="font-semibold text-lg text-slate-800 mb-2">How to Play</h2>
+      <ul className="list-decimal list-inside text-slate-700 text-sm space-y-1">
+        <li>Win a small board to claim it.</li>
+        <li>Your move tells your opponent where to play next.</li>
+        <li>Win 3 small boards in a row to win the game!</li>
+      </ul>
     </div>
   );
 }
