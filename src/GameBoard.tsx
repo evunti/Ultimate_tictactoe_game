@@ -49,11 +49,11 @@ export function GameBoard() {
                 </div>
               )}
               {/* Mini board grid */}
-              <div className="relative w-full h-full grid grid-cols-3 grid-rows-3 gap-1 sm:gap-2 z-0">
+              <div className="relative w-full h-full grid grid-cols-3 grid-rows-3 gap-1 sm:gap-2 z-0 min-w-[110px] min-h-[110px] sm:min-w-[150px] sm:min-h-[150px]">
                 {board.map((cell, position) => (
                   <button
                     key={position}
-                    className={`w-full h-full aspect-square flex items-center justify-center text-2xl sm:text-3xl font-extrabold rounded-lg border border-slate-200 transition-colors duration-150
+                    className={`w-full h-full aspect-square flex items-center justify-center text-2xl sm:text-3xl font-extrabold rounded-lg border border-slate-200 transition-colors duration-150 min-w-[32px] min-h-[32px] sm:min-w-[48px] sm:min-h-[48px]
                       ${cell === "X" ? "text-blue-600" : cell === "O" ? "text-red-500" : "hover:bg-blue-50 active:bg-blue-100"}
                     `}
                     onClick={() => dispatch(makeMove({ boardIndex, position }))}

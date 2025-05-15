@@ -5,17 +5,14 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-100 to-slate-200">
       <header className="py-8 text-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-800 tracking-tight mb-2 drop-shadow-md">
-          UltimateTTT
+          Ultimate Tic Tac Toe
         </h1>
-        <div className="text-lg sm:text-xl text-slate-600 font-medium mb-4">
-          Ultimate Tic Tac Toe – Play Online
-        </div>
       </header>
       <main className="flex-1 flex flex-col items-center justify-start px-2 pb-8">
         <div className="w-full max-w-md">
           <HowToPlayCard />
         </div>
-        <div className="w-full max-w-2xl mt-8 flex justify-center">
+        <div className="w-full max-w-4xl mt-8 flex justify-center">
           <GameBoard />
         </div>
       </main>
